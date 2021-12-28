@@ -23,5 +23,28 @@
         android:id="@+id/addEditClassFragment"
         android:name="com.example.studenttally7.ui.AddEditClassFragment"
         android:label="Add/Edit Class"
-        tools:layout="@layout/fragment_add_edit_class" />
+        tools:layout="@layout/fragment_add_edit_class" >
+        <argument
+            android:name="classToEdit"
+            app:argType="com.example.studenttally7.data.MyClass"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_addEditClassFragment_to_deleteClassFragment"
+            app:destination="@id/deleteClassFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deleteClassFragment"
+        android:name="com.example.studenttally7.ui.DeleteClassFragment"
+        android:label="Delete class"
+        tools:layout="@layout/fragment_delete_class">
+        <action
+            android:id="@+id/action_deleteClassFragment_to_classesFragment"
+            app:destination="@id/classesFragment"
+            app:popUpTo="@id/classesFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="classIdToDelete"
+            app:argType="string" />
+    </fragment>
 </navigation>
