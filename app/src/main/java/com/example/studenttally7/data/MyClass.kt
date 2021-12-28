@@ -11,6 +11,4 @@ data class MyClass(
     val created: Long = System.currentTimeMillis(),
     val lessons: MutableList<Lesson> = ArrayList()
 ){
-    val createdDateFormatted: String
-        get() = DateFormat.getDateTimeInstance().format(created)
 }

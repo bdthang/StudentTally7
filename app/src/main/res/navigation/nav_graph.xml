@@ -9,10 +9,19 @@
         android:id="@+id/classesFragment"
         android:name="com.example.studenttally7.ui.ClassesFragment"
         android:label="Classes"
-        tools:layout="@layout/fragment_classes" />
+        tools:layout="@layout/fragment_classes" >
+        <action
+            android:id="@+id/action_classesFragment_to_addEditClassFragment"
+            app:destination="@id/addEditClassFragment" />
+    </fragment>
     <fragment
         android:id="@+id/viewClassFragment"
         android:name="com.example.studenttally7.ui.ViewClassFragment"
         android:label="View class"
         tools:layout="@layout/fragment_view_class" />
+    <fragment
+        android:id="@+id/addEditClassFragment"
+        android:name="com.example.studenttally7.ui.AddEditClassFragment"
+        android:label="Add/Edit Class"
+        tools:layout="@layout/fragment_add_edit_class" />
 </navigation>
