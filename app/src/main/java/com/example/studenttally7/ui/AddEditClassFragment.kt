@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.studenttally7.FirestoreCollectionName
 import com.example.studenttally7.R
 import com.example.studenttally7.data.MyClass
 import com.example.studenttally7.databinding.FragmentAddEditClassBinding
@@ -39,12 +40,14 @@ class AddEditClassFragment : Fragment(R.layout.fragment_add_edit_class) {
             binding.etTitle.setText(classToEdit.title)
             binding.etShortId.setText(classToEdit.shortId)
             binding.etTimeLimit.setText(classToEdit.entryTimeLimit.toString())
-            binding.checkboxArchived.isChecked = classToEdit.isArchived
+            binding.checkboxArchived.isChecked = classToEdit.archived
+            Log.d("Checkbox", "What ${classToEdit.archived}")
             oldShortId = classToEdit.shortId
 
             binding.buttonConfirmClass.setOnClickListener {
-                getClassFromView()
-                updateClass()
+                if (validateClassDataFromView()) {
+                    updateClass()
+                }
             }
 
             binding.buttonDeleteClass.visibility = View.VISIBLE
@@ -54,13 +57,15 @@ class AddEditClassFragment : Fragment(R.layout.fragment_add_edit_class) {
             }
         } else {
             binding.buttonConfirmClass.setOnClickListener {
-                getClassFromView()
-                addClass()
+                if (validateClassDataFromView())
+                {
+                    addClass()
+                }
             }
         }
     }
 
-    private fun getClassFromView() {
+    private fun validateClassDataFromView(): Boolean {
         val title = binding.etTitle.text.toString().trim()
         val shortId = binding.etShortId.text.toString().trim()
         val timeLimit = binding.etTimeLimit.text.toString().trim()
@@ -68,40 +73,45 @@ class AddEditClassFragment : Fragment(R.layout.fragment_add_edit_class) {
 
         if (title.isEmpty() || shortId.isEmpty() || timeLimit.isEmpty()) {
             Toast.makeText(context, "Please enter missing values.", Toast.LENGTH_SHORT).show()
-            return
+            return false
+        }
+
+        if (timeLimit.toInt() <= 0){
+            Toast.makeText(context, "Time limit need to be larger than 0.", Toast.LENGTH_SHORT).show()
+            return false
         }
 
         currentClass = MyClass(
             shortId = shortId,
             title = title,
             entryTimeLimit = timeLimit.toInt(),
-            isArchived = isArchived
+            archived = isArchived
         )
+        return true
 
     }
 
     private fun updateClass() {
-        val classRef: CollectionReference = FirebaseFirestore.getInstance().collection("Class")
+        val classRef: CollectionReference = FirebaseFirestore.getInstance().collection(
+            FirestoreCollectionName.CLASS_COLLECTION)
 
         classRef.whereEqualTo("shortId", oldShortId)
+            .limit(1)
             .get()
             .addOnSuccessListener { documents ->
                 when {
                     documents.isEmpty -> { // Class to be updated is not found
-                        Log.e("Firestore", "Class to be updated not found, shortID = ${oldShortId}")
-                    }
-                    documents.size() > 1 -> { // 2 Classes with same short id
-                        Log.e("Firestore", "More than one class with this same uid???")
+                        Log.e("Firestore", "Class to be updated not found, shortID = $oldShortId")
                     }
                     else -> {
                         for (document in documents) {
                             classRef.document(document.id).update(
-                                "isArchived", currentClass.isArchived,
+                                "archived", currentClass.archived,
                                 "title", currentClass.title,
                                 "entryTimeLimit", currentClass.entryTimeLimit,
                                 "shortId", currentClass.shortId
                             )
-                                .addOnSuccessListener { Log.d("Firestore", "DocumentSnapshot successfully updated!") }
+                                .addOnSuccessListener { Log.d("Firestore", "DocumentSnapshot successfully updated! ${document.data}") }
                                 .addOnFailureListener { e -> Log.w("Firestore", "Error updating document", e) }
                         }
 
@@ -117,9 +127,10 @@ class AddEditClassFragment : Fragment(R.layout.fragment_add_edit_class) {
 
     private fun addClass() {
         val currentContext = context
-        val classRef: CollectionReference = FirebaseFirestore.getInstance().collection("Class")
+        val classRef: CollectionReference = FirebaseFirestore.getInstance().collection(FirestoreCollectionName.CLASS_COLLECTION)
 
         classRef.whereEqualTo("shortId", currentClass.shortId)
+            .limit(1)
             .get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {

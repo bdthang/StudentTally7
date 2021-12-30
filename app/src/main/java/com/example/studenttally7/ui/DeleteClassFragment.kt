@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.studenttally7.FirestoreCollectionName
 import com.example.studenttally7.databinding.FragmentDeleteClassBinding
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,17 +51,15 @@ class DeleteClassFragment : Fragment() {
     }
 
     private fun deleteClass() {
-        val classRef: CollectionReference = FirebaseFirestore.getInstance().collection("Class")
+        val classRef: CollectionReference = FirebaseFirestore.getInstance().collection(FirestoreCollectionName.CLASS_COLLECTION)
 
         classRef.whereEqualTo("shortId", args.classIdToDelete)
+            .limit(1)
             .get()
             .addOnSuccessListener { documents ->
                 when {
                     documents.isEmpty -> { // Class to be updated is not found
                         Log.e("Firestore", "Class to be deleted not found, shortID = ${args.classIdToDelete}")
-                    }
-                    documents.size() > 1 -> { // 2 Classes with same short id
-                        Log.e("Firestore", "More than one class with this same uid???")
                     }
                     else -> {
                         for (document in documents) {
