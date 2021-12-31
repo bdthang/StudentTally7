@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,7 +8,11 @@
     tools:context=".ui.ScannerFragment">
 
     <com.budiyev.android.codescanner.CodeScannerView
-        android:id="@+id/code_scanner"
+        android:id="@+id/code_scanner_view"
+        app:autoFocusButtonVisible="true"
+        app:autoFocusButtonColor="@color/white"
+        app:flashButtonColor="@color/white"
+        app:flashButtonVisible="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

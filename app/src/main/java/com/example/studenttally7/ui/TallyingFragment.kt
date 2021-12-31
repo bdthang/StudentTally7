@@ -43,6 +43,8 @@ class TallyingFragment : Fragment(R.layout.fragment_tallying) {
                 if (studentId in 10000000..99999999) {
                     binding.tvStudentIdResult.text = "OK"
                     this.studentId = studentId
+                } else {
+                    binding.tvStudentIdResult.text = "Not OK"
                 }
             }
 
