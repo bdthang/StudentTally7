@@ -13,12 +13,21 @@
         <action
             android:id="@+id/action_classesFragment_to_addEditClassFragment"
             app:destination="@id/addEditClassFragment" />
+        <action
+            android:id="@+id/action_classesFragment_to_viewClassFragment"
+            app:destination="@id/viewClassFragment" />
     </fragment>
     <fragment
         android:id="@+id/viewClassFragment"
         android:name="com.example.studenttally7.ui.ViewClassFragment"
         android:label="View class"
-        tools:layout="@layout/fragment_view_class" />
+        tools:layout="@layout/fragment_view_class" >
+        <argument
+            android:name="shortId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="default" />
+    </fragment>
     <fragment
         android:id="@+id/addEditClassFragment"
         android:name="com.example.studenttally7.ui.AddEditClassFragment"
@@ -46,5 +55,19 @@
         <argument
             android:name="classIdToDelete"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/scannerFragment"
+        android:name="com.example.studenttally7.ui.ScannerFragment"
+        android:label="fragment_scanner"
+        tools:layout="@layout/fragment_scanner" />
+    <fragment
+        android:id="@+id/tallyingFragment"
+        android:name="com.example.studenttally7.ui.TallyingFragment"
+        android:label="fragment_tallying"
+        tools:layout="@layout/fragment_tallying" >
+        <action
+            android:id="@+id/action_tallyingFragment_to_scannerFragment"
+            app:destination="@id/scannerFragment" />
     </fragment>
 </navigation>

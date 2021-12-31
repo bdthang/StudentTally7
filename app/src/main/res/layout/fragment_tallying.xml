@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context=".ui.TallyingFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_shortId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Short ID" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student ID" />
+
+    <TextView
+        android:id="@+id/tv_student_id_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Result" />
+
+    <Button
+        android:id="@+id/button_scan_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scan" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Photo" />
+
+    <TextView
+        android:id="@+id/tv_student_photo_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Result" />
+
+    <Button
+        android:id="@+id/button_take_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take a photo" />
+
+    <Button
+        android:id="@+id/button_submit_tally"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+</LinearLayout>

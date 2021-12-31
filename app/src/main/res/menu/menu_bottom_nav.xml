@@ -8,4 +8,8 @@
         android:id="@+id/viewClassFragment"
         android:icon="@drawable/ic_baseline_article_24"
         android:title="View" />
+    <item
+        android:id="@+id/tallyingFragment"
+        android:icon="@drawable/ic_baseline_photo_camera_24"
+        android:title="View" />
 </menu>

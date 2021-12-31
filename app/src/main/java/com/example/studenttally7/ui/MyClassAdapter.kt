@@ -2,6 +2,7 @@ package com.example.studenttally7.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.studenttally7.data.MyClass
@@ -28,6 +29,11 @@ class MyClassAdapter(options: FirestoreRecyclerOptions<MyClass>) :
                 tvTitle.text = myClass.title
                 buttonEditClass.setOnClickListener {
                     val action = ClassesFragmentDirections.actionClassesFragmentToAddEditClassFragment(myClass)
+                    val navController = Navigation.findNavController(binding.root)
+                    navController.navigate(action)
+                }
+                root.setOnClickListener {
+                    val action = ClassesFragmentDirections.actionClassesFragmentToViewClassFragment(myClass.shortId)
                     val navController = Navigation.findNavController(binding.root)
                     navController.navigate(action)
                 }
