@@ -8,11 +8,13 @@
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_add_edit_class.xml" value="0.25025641025641027" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_classes.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_delete_class.xml" value="0.25025641025641027" />
+        <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_login.xml" value="0.13854166666666667" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_scanner.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_tallying.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_view_class.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/item_class.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/menu/menu_bottom_nav.xml" value="0.25416666666666665" />
+        <entry key="..\:/Desktop/StudentTally7/app/src/main/res/menu/menu_options_classes.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

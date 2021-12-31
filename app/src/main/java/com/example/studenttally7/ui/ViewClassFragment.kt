@@ -17,6 +17,7 @@ import com.example.studenttally7.FirestoreCollectionName
 import com.example.studenttally7.R
 import com.example.studenttally7.data.Lesson
 import com.example.studenttally7.databinding.FragmentViewClassBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -66,7 +67,8 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
         val shortId = binding.etShortId.text.toString()
 
         val classRef: CollectionReference = FirebaseFirestore.getInstance().collection(
-            FirestoreCollectionName.CLASS_COLLECTION)
+            FirestoreCollectionName.CLASS_COLLECTION
+        )
 
         classRef.whereEqualTo("shortId", shortId)
             .limit(1)
@@ -74,11 +76,13 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
             .addOnSuccessListener { classes ->
                 when {
                     classes.isEmpty -> { // Class to be updated is not found
-                        Toast.makeText(context, "Class $shortId not found", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Class $shortId not found", Toast.LENGTH_SHORT)
+                            .show()
                     }
                     else -> {
                         for (myClass in classes) {
-                            val lessonRef = classRef.document(myClass.id).collection(FirestoreCollectionName.LESSON_COLLECTION)
+                            val lessonRef = classRef.document(myClass.id)
+                                .collection(FirestoreCollectionName.LESSON_COLLECTION)
                             lessonRef
                                 .orderBy("end", Query.Direction.DESCENDING)
                                 .limit(1)
@@ -86,19 +90,35 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
                                 .addOnSuccessListener { lessons ->
                                     if (lessons.isEmpty) { // No lesson created yet
                                         val lesson = Lesson()
-                                        lesson.end = lesson.created + myClass.data["entryTimeLimit"].toString().toLong() * 60000
+                                        lesson.end =
+                                            lesson.created + myClass.data["entryTimeLimit"].toString()
+                                                .toLong() * 60000
 
                                         lessonRef.add(lesson)
-                                    }
-                                    else {
+                                    } else {
                                         for (lesson in lessons) {
-                                            if (System.currentTimeMillis() < lesson.data["end"].toString().toLong()) { // Still lesson going on
-                                                Toast.makeText(context, "Last lesson hasn't ended.", Toast.LENGTH_SHORT).show()
+                                            if (System.currentTimeMillis() < lesson.data["end"].toString()
+                                                    .toLong()
+                                            ) { // Still lesson going on
+                                                Toast.makeText(
+                                                    context,
+                                                    "Last lesson hasn't ended.",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
                                             } else {
                                                 val newLesson = Lesson()
-                                                newLesson.end = newLesson.created + myClass.data["entryTimeLimit"].toString().toLong() * 60000
+                                                newLesson.end =
+                                                    newLesson.created + myClass.data["entryTimeLimit"].toString()
+                                                        .toLong() * 60000
 
                                                 lessonRef.add(newLesson)
+                                                    .addOnSuccessListener {
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Done.",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
                                             }
 
                                             break
@@ -128,6 +148,12 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
             .get()
             .addOnSuccessListener { classes ->
                 for (myClass in classes) {
+                    val currentUser = FirebaseAuth.getInstance().currentUser
+                    if (currentUser != null && currentUser.uid == myClass.data["authorId"]) {
+                        binding.fabAddLesson.visibility = View.VISIBLE
+                    } else {
+                        binding.fabAddLesson.visibility = View.GONE
+                    }
 
                     val lessonRef: CollectionReference = classRef.document(myClass.id)
                         .collection(FirestoreCollectionName.LESSON_COLLECTION)

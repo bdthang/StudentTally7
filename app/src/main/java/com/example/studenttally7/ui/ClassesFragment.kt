@@ -1,15 +1,15 @@
 package com.example.studenttally7.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.studenttally7.R
 import com.example.studenttally7.data.MyClass
 import com.example.studenttally7.databinding.FragmentClassesBinding
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -21,6 +21,7 @@ class ClassesFragment : Fragment(R.layout.fragment_classes) {
     private val binding get() = _binding!!
 
     private lateinit var classAdapter: MyClassAdapter
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,18 +32,51 @@ class ClassesFragment : Fragment(R.layout.fragment_classes) {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_options_classes, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.option_signout) {
+            FirebaseAuth.getInstance().signOut()
+            val action = ClassesFragmentDirections.actionClassesFragmentToLoginFragment()
+            findNavController().navigate(action)
+            return true
+        } else {
+            return super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
+            val action = ClassesFragmentDirections.actionClassesFragmentToLoginFragment()
+            findNavController().navigate(action)
+        } else {
+            binding.tvUserName.text = currentUser.displayName.toString()
+            setupRecyclerView(currentUser.uid)
+            Log.d("Auth", currentUser.uid)
+        }
 
         binding.fabAddClass.setOnClickListener {
             val action = ClassesFragmentDirections.actionClassesFragmentToAddEditClassFragment()
             findNavController().navigate(action)
         }
-        setupRecyclerView()
+
     }
 
-    private fun setupRecyclerView() {
-        val query: Query = classRef.orderBy("created", Query.Direction.DESCENDING)
+    private fun setupRecyclerView(authorId: String) {
+        val query: Query = classRef
+            .whereEqualTo("authorId", authorId)
+            .orderBy("created", Query.Direction.DESCENDING)
 
         val options: FirestoreRecyclerOptions<MyClass> = FirestoreRecyclerOptions.Builder<MyClass>()
             .setQuery(query, MyClass::class.java)

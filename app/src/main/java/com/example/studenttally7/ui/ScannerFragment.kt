@@ -15,12 +15,12 @@ import com.budiyev.android.codescanner.*
 import com.example.studenttally7.R
 import com.example.studenttally7.databinding.FragmentScannerBinding
 
-private const val CAMERA_REQUEST_CODE = 101
 
 class ScannerFragment : Fragment(R.layout.fragment_scanner) {
     private var _binding: FragmentScannerBinding? = null
     private val binding get() = _binding!!
     private lateinit var codeScanner: CodeScanner
+    private val CAMERA_REQUEST_CODE = 101
 
     override fun onCreateView(
         inflater: LayoutInflater,

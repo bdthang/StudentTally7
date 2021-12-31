@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_classesFragment_to_viewClassFragment"
             app:destination="@id/viewClassFragment" />
+        <action
+            android:id="@+id/action_classesFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/viewClassFragment"
@@ -70,4 +73,9 @@
             android:id="@+id/action_tallyingFragment_to_scannerFragment"
             app:destination="@id/scannerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.studenttally7.ui.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 </navigation>

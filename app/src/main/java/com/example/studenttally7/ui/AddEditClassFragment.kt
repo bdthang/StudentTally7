@@ -13,6 +13,7 @@ import com.example.studenttally7.FirestoreCollectionName
 import com.example.studenttally7.R
 import com.example.studenttally7.data.MyClass
 import com.example.studenttally7.databinding.FragmentAddEditClassBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -81,11 +82,14 @@ class AddEditClassFragment : Fragment(R.layout.fragment_add_edit_class) {
             return false
         }
 
+        val author = FirebaseAuth.getInstance().currentUser ?: return false
+
         currentClass = MyClass(
             shortId = shortId,
             title = title,
             entryTimeLimit = timeLimit.toInt(),
-            archived = isArchived
+            archived = isArchived,
+            authorId = author.uid
         )
         return true
 
