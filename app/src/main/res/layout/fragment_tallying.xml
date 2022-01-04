@@ -40,11 +40,11 @@
         android:layout_height="wrap_content"
         android:text="Photo" />
 
-    <TextView
-        android:id="@+id/tv_student_photo_result"
+    <ImageView
+        android:id="@+id/img_view_photo_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Result" />
+        android:contentDescription="Photo result" />
 
     <Button
         android:id="@+id/button_take_photo"

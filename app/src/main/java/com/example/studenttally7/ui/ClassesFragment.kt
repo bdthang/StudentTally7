@@ -61,7 +61,6 @@ class ClassesFragment : Fragment(R.layout.fragment_classes) {
             val action = ClassesFragmentDirections.actionClassesFragmentToLoginFragment()
             findNavController().navigate(action)
         } else {
-            binding.tvUserName.text = currentUser.displayName.toString()
             setupRecyclerView(currentUser.uid)
             Log.d("Auth", currentUser.uid)
         }

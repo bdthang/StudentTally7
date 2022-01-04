@@ -12,6 +12,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.studenttally7.FirestoreCollectionName
 import com.example.studenttally7.R
@@ -204,6 +205,10 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
                                             val tvvv =
                                                 tableRow.getChildAt(lessonIdList.indexOf(lesson.id) + 1) as TextView
                                             tvvv.text = "X"
+                                            tvvv.setOnClickListener {
+                                                val action = ViewClassFragmentDirections.actionViewClassFragmentToViewPhotoFragment(entry.data["photoUrl"].toString())
+                                                findNavController().navigate(action)
+                                            }
 
                                         } else { // Make new table row if not.
                                             studentIdList.add(entry.id)
@@ -242,6 +247,10 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
                                             val tvvv =
                                                 tableRow.getChildAt(lessonIdList.indexOf(lesson.id) + 1) as TextView
                                             tvvv.text = "X"
+                                            tvvv.setOnClickListener {
+                                                val action = ViewClassFragmentDirections.actionViewClassFragmentToViewPhotoFragment(entry.data["photoUrl"].toString())
+                                                findNavController().navigate(action)
+                                            }
                                         }
                                     }
                                 }

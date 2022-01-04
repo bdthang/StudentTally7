@@ -30,6 +30,9 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="default" />
+        <action
+            android:id="@+id/action_viewClassFragment_to_viewPhotoFragment"
+            app:destination="@id/viewPhotoFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditClassFragment"
@@ -78,4 +81,13 @@
         android:name="com.example.studenttally7.ui.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/viewPhotoFragment"
+        android:name="com.example.studenttally7.ui.ViewPhotoFragment"
+        android:label="fragment_view_photo"
+        tools:layout="@layout/fragment_view_photo" >
+        <argument
+            android:name="photoUrl"
+            app:argType="string" />
+    </fragment>
 </navigation>
