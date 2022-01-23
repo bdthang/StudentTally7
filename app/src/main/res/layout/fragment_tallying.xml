@@ -1,60 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="8dp"
     tools:context=".ui.TallyingFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_shortId"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_shortId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Short ID" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Short ID" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Student ID" />
+            <Button
+                android:id="@+id/button_scan_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Scan ID" />
 
-    <TextView
-        android:id="@+id/tv_student_id_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Result" />
+            <TextView
+                android:id="@+id/tv_student_id_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Result" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/button_scan_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scan" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Photo" />
+            <Button
+                android:id="@+id/button_take_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Take photo" />
 
-    <ImageView
-        android:id="@+id/img_view_photo_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Photo result" />
-
-    <Button
-        android:id="@+id/button_take_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take a photo" />
+            <ImageView
+                android:id="@+id/img_view_photo_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Photo result" />
+        </LinearLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_submit_tally"
         android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:text="Submit" />
-</LinearLayout>
+        android:text="Submit"
+        app:icon="@drawable/ic_baseline_check_24" />
+</RelativeLayout>

@@ -168,6 +168,7 @@ class TallyingFragment : Fragment(R.layout.fragment_tallying) {
     private fun openCamera() {
         val camera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 //        camera.putExtra("android.intent.extras.CAMERA_FACING", 1)
+//        camera.putExtra("android.intent.extra.USE_FRONT_CAMERA", true)
         startActivityForResult(camera, CAMERA_REQUEST_CODE)
     }
 

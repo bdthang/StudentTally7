@@ -89,7 +89,6 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                 if (task.isSuccessful) {
                     Log.d("Firebase auth", "signInWithCredential: success")
                     val user = auth.currentUser
-                    // Todo: Update ui
                     findNavController().navigateUp()
 
                 } else {

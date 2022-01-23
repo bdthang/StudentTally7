@@ -3,14 +3,13 @@ package com.example.studenttally7.ui
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -51,7 +50,10 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
         }
 
         binding.fabAddLesson.setOnClickListener {
-            addLesson()
+//            addLesson()
+            val shortId = binding.etShortId.text.toString()
+            val action = ViewClassFragmentDirections.actionViewClassFragmentToAddLessonDialogFragment(shortId)
+            findNavController().navigate(action)
         }
 
         binding.buttonConfirmClass.setOnClickListener {
@@ -175,6 +177,8 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
                                 TableRow.LayoutParams.WRAP_CONTENT,
                                 TableRow.LayoutParams.WRAP_CONTENT
                             )
+                            tvNothing.setPadding(8)
+                            tvNothing.text = "No."
                             tableHeaderRow.addView(tvNothing)
 
                             for ((i, lesson) in lessons.withIndex()) {
@@ -186,25 +190,25 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
                                     TableRow.LayoutParams.WRAP_CONTENT
                                 )
                                 textView.text = (i + 1).toString()
+                                textView.setPadding(8)
 
                                 tableHeaderRow.addView(textView)
                             }
                             binding.tableLayout.addView(tableHeaderRow)
 
                             for (lesson in lessons) {
-                                Log.d("Firestore", "${lesson.id} => ${lesson.data}")
 
                                 val entryRef: CollectionReference = lessonRef.document(lesson.id)
                                     .collection(FirestoreCollectionName.ENTRY_COLLECTION)
                                 entryRef.get().addOnSuccessListener { entries ->
                                     for (entry in entries) {
-                                        Log.d("Firestore", "${entry.id} => ${entry.data}")
                                         if (studentIdList.contains(entry.id)) { // This student row is already on the table
                                             val tableRow: TableRow = binding.tableLayout
                                                 .getChildAt(studentIdList.indexOf(entry.id) + 1) as TableRow
                                             val tvvv =
                                                 tableRow.getChildAt(lessonIdList.indexOf(lesson.id) + 1) as TextView
-                                            tvvv.text = "X"
+                                            tvvv.text = "✓"
+                                            tvvv.setPadding(8)
                                             tvvv.setOnClickListener {
                                                 val action = ViewClassFragmentDirections.actionViewClassFragmentToViewPhotoFragment(entry.data["photoUrl"].toString())
                                                 findNavController().navigate(action)
@@ -225,6 +229,7 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
                                                 TableRow.LayoutParams.WRAP_CONTENT
                                             )
                                             studentIdTextView.text = entry.id
+                                            studentIdTextView.setPadding(8)
                                             tableDataRow.addView(studentIdTextView)
 
                                             repeat(lessons.size()) {
@@ -234,8 +239,15 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
                                                         TableRow.LayoutParams.WRAP_CONTENT,
                                                         TableRow.LayoutParams.WRAP_CONTENT
                                                     )
-                                                defaultTextView.text = "O"
+                                                defaultTextView.text = ""
+                                                defaultTextView.setPadding(8)
                                                 tableDataRow.addView(defaultTextView)
+
+//                                                val checkImg = ImageView(context)
+//                                                val checkImg = ImageView(ContextThemeWrapper(context, R.style.Widget_AppCompat_ActionButton), null, 0)
+//                                                checkImg.setImageResource(R.drawable.ic_baseline_check_circle_24)
+//                                                checkImg.setPadding(8)
+//                                                tableDataRow.addView(checkImg)
                                             }
 
                                             binding.tableLayout.addView(tableDataRow)
@@ -246,7 +258,8 @@ class ViewClassFragment : Fragment(R.layout.fragment_view_class) {
                                                 .getChildAt(studentIdList.indexOf(entry.id) + 1) as TableRow
                                             val tvvv =
                                                 tableRow.getChildAt(lessonIdList.indexOf(lesson.id) + 1) as TextView
-                                            tvvv.text = "X"
+                                            tvvv.text = "✓"
+                                            tvvv.setPadding(8)
                                             tvvv.setOnClickListener {
                                                 val action = ViewClassFragmentDirections.actionViewClassFragmentToViewPhotoFragment(entry.data["photoUrl"].toString())
                                                 findNavController().navigate(action)
