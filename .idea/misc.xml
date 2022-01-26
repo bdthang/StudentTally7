@@ -6,6 +6,8 @@
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2703125" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.2703125" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
+        <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/activity_main2.xml" value="0.25416666666666665" />
+        <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/activity_starting.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_add_edit_class.xml" value="0.25025641025641027" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_classes.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_delete_class.xml" value="0.25025641025641027" />
@@ -16,6 +18,9 @@
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/fragment_view_photo.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/layout/item_class.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/menu/menu_bottom_nav.xml" value="0.25416666666666665" />
+        <entry key="..\:/Desktop/StudentTally7/app/src/main/res/menu/menu_bottom_nav2.xml" value="0.25416666666666665" />
+        <entry key="..\:/Desktop/StudentTally7/app/src/main/res/menu/menu_options.xml" value="0.25416666666666665" />
+        <entry key="..\:/Desktop/StudentTally7/app/src/main/res/menu/menu_options2.xml" value="0.25416666666666665" />
         <entry key="..\:/Desktop/StudentTally7/app/src/main/res/menu/menu_options_classes.xml" value="0.25416666666666665" />
       </map>
     </option>

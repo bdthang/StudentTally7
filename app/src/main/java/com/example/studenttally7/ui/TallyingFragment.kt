@@ -1,5 +1,6 @@
 package com.example.studenttally7.ui
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -53,11 +54,9 @@ class TallyingFragment : Fragment(R.layout.fragment_tallying) {
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>("studentId")
             ?.observe(viewLifecycleOwner) { studentId ->
+                binding.tvStudentIdResult.text = studentId.toString()
                 if (studentId in 10000000..99999999) {
-                    binding.tvStudentIdResult.text = "OK"
                     this.studentId = studentId
-                } else {
-                    binding.tvStudentIdResult.text = "Not OK"
                 }
             }
 
@@ -90,6 +89,13 @@ class TallyingFragment : Fragment(R.layout.fragment_tallying) {
             Toast.makeText(context, "Photo not found.", Toast.LENGTH_SHORT).show()
             return
         }
+
+        val sharedRefs = requireContext().getSharedPreferences("TallyAppPrefs", MODE_PRIVATE)
+        val sharedPrefClasses = sharedRefs.getStringSet("classes", emptySet())!!.toMutableSet()
+        val editor = sharedRefs.edit()
+        sharedPrefClasses.add(shortId)
+        editor.putStringSet("classes", sharedPrefClasses)
+        editor.apply()
 
         val classRef: CollectionReference = FirebaseFirestore.getInstance().collection(
             FirestoreCollectionName.CLASS_COLLECTION

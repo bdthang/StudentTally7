@@ -1,6 +1,8 @@
 package com.example.studenttally7.ui
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -27,11 +29,27 @@ class MyClassAdapter(options: FirestoreRecyclerOptions<MyClass>) :
         fun bind(myClass: MyClass) {
             binding.apply {
                 tvTitle.text = myClass.title
-                buttonEditClass.setOnClickListener {
-                    val action = ClassesFragmentDirections.actionClassesFragmentToAddEditClassFragment(myClass)
-                    val navController = Navigation.findNavController(binding.root)
-                    navController.navigate(action)
+                val sharedRefs = binding.root.context.getSharedPreferences("TallyAppPrefs", Context.MODE_PRIVATE)
+                val role = sharedRefs.getString("role", "none")
+                if (role == "teacher") {
+                    buttonEditClass.setOnClickListener {
+                        val action = ClassesFragmentDirections.actionClassesFragmentToAddEditClassFragment(myClass)
+                        val navController = Navigation.findNavController(binding.root)
+                        navController.navigate(action)
+                    }
+                    buttonRemoveClass.visibility = View.GONE
+                } else {
+                    buttonEditClass.visibility = View.GONE
+                    buttonRemoveClass.setOnClickListener {
+                        val editor = sharedRefs.edit()
+                        val sharedPrefClasses = sharedRefs.getStringSet("classes", emptySet())!!.toMutableSet()
+                        sharedPrefClasses.remove(myClass.shortId)
+                        editor.putStringSet("classes", sharedPrefClasses)
+                        editor.apply()
+                    }
+
                 }
+
                 root.setOnClickListener {
                     val action = ClassesFragmentDirections.actionClassesFragmentToViewClassFragment(myClass.shortId)
                     val navController = Navigation.findNavController(binding.root)

@@ -27,9 +27,7 @@
         tools:layout="@layout/fragment_view_class" >
         <argument
             android:name="shortId"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="default" />
+            app:argType="string" />
         <action
             android:id="@+id/action_viewClassFragment_to_viewPhotoFragment"
             app:destination="@id/viewPhotoFragment" />

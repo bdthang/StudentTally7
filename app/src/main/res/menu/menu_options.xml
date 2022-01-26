@@ -2,7 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/option_signout"
+        android:id="@+id/option_reselect_role"
+        android:title="Reselect role"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/option_sign_out"
         android:title="Sign out"
         app:showAsAction="never" />
 </menu>

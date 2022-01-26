@@ -1,5 +1,6 @@
 package com.example.studenttally7.ui
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,6 +11,7 @@ import com.example.studenttally7.data.MyClass
 import com.example.studenttally7.databinding.FragmentClassesBinding
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -32,47 +34,53 @@ class ClassesFragment : Fragment(R.layout.fragment_classes) {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_options_classes, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.option_signout) {
-            FirebaseAuth.getInstance().signOut()
-            val action = ClassesFragmentDirections.actionClassesFragmentToLoginFragment()
-            findNavController().navigate(action)
-            return true
-        } else {
-            return super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        if (currentUser == null) {
-            val action = ClassesFragmentDirections.actionClassesFragmentToLoginFragment()
-            findNavController().navigate(action)
+        val role = requireContext().getSharedPreferences("TallyAppPrefs", MODE_PRIVATE).getString("role", "none")
+        if (role == "teacher") {
+            auth = FirebaseAuth.getInstance()
+            val currentUser = auth.currentUser
+            if (currentUser == null) {
+                val action = ClassesFragmentDirections.actionClassesFragmentToLoginFragment()
+                findNavController().navigate(action)
+            } else {
+                setupRecyclerView(currentUser.uid)
+                Log.d("Auth", currentUser.uid)
+            }
+
+            binding.fabAddClass.setOnClickListener {
+                val action = ClassesFragmentDirections.actionClassesFragmentToAddEditClassFragment()
+                findNavController().navigate(action)
+            }
+
         } else {
-            setupRecyclerView(currentUser.uid)
-            Log.d("Auth", currentUser.uid)
+            binding.fabAddClass.visibility = View.GONE
+            setupRecyclerView()
         }
-
-        binding.fabAddClass.setOnClickListener {
-            val action = ClassesFragmentDirections.actionClassesFragmentToAddEditClassFragment()
-            findNavController().navigate(action)
-        }
-
     }
 
-    private fun setupRecyclerView(authorId: String) {
+    private fun setupRecyclerView() { // For student, get list from local
+        val prefs = requireContext().getSharedPreferences("TallyAppPrefs", MODE_PRIVATE)
+        var classes = prefs.getStringSet("classes", emptySet())
+        if (classes!!.isEmpty()) {
+            classes = setOf("example")
+        }
+
+        val query: Query = classRef
+            .whereIn("shortId", classes.take(10).toList())
+            .orderBy("created", Query.Direction.DESCENDING)
+
+        val options: FirestoreRecyclerOptions<MyClass> = FirestoreRecyclerOptions.Builder<MyClass>()
+            .setQuery(query, MyClass::class.java)
+            .build()
+
+        classAdapter = MyClassAdapter(options)
+        binding.recyclerViewClasses.setHasFixedSize(true)
+        binding.recyclerViewClasses.adapter = classAdapter
+    }
+
+    private fun setupRecyclerView(authorId: String) { // For teacher, get list from online database
         val query: Query = classRef
             .whereEqualTo("authorId", authorId)
             .orderBy("created", Query.Direction.DESCENDING)
@@ -88,12 +96,16 @@ class ClassesFragment : Fragment(R.layout.fragment_classes) {
 
     override fun onStart() {
         super.onStart()
-        classAdapter.startListening()
+        if (this::classAdapter.isInitialized) {
+            classAdapter.startListening()
+        }
     }
 
     override fun onStop() {
+        if (this::classAdapter.isInitialized) {
+            classAdapter.stopListening()
+        }
         super.onStop()
-        classAdapter.stopListening()
     }
 
     override fun onDestroyView() {
