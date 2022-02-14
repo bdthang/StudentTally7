@@ -8,7 +8,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class MyClass(
     val shortId: String = "",
-    val title: String = "Default_title",
+    val title: String = "Title",
+    val description: String = "",
     val entryTimeLimit: Int = 30,
     val archived: Boolean = false,
     val authorId: String = "",

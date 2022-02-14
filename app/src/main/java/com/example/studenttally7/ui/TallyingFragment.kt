@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.studenttally7.FirestoreCollectionName
 import com.example.studenttally7.R
 import com.example.studenttally7.data.TallyEntry
@@ -35,6 +36,8 @@ class TallyingFragment : Fragment(R.layout.fragment_tallying) {
     private lateinit var photo: Bitmap
     private val CAMERA_REQUEST_CODE = 101
 
+    private val args: TallyingFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,6 +54,8 @@ class TallyingFragment : Fragment(R.layout.fragment_tallying) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.etShortId.setText(args.shortId)
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>("studentId")
             ?.observe(viewLifecycleOwner) { studentId ->
@@ -89,13 +94,6 @@ class TallyingFragment : Fragment(R.layout.fragment_tallying) {
             Toast.makeText(context, "Photo not found.", Toast.LENGTH_SHORT).show()
             return
         }
-
-        val sharedRefs = requireContext().getSharedPreferences("TallyAppPrefs", MODE_PRIVATE)
-        val sharedPrefClasses = sharedRefs.getStringSet("classes", emptySet())!!.toMutableSet()
-        val editor = sharedRefs.edit()
-        sharedPrefClasses.add(shortId)
-        editor.putStringSet("classes", sharedPrefClasses)
-        editor.apply()
 
         val classRef: CollectionReference = FirebaseFirestore.getInstance().collection(
             FirestoreCollectionName.CLASS_COLLECTION

@@ -8,9 +8,12 @@
     tools:context=".ui.TallyingFragment">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_above="@id/button_submit_tally"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -19,6 +22,7 @@
                 android:id="@+id/et_shortId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:hint="Short ID" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,31 +46,27 @@
                 tools:text="Result" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/button_take_photo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="Take photo" />
 
-            <Button
-                android:id="@+id/button_take_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Take photo" />
-
-            <ImageView
-                android:id="@+id/img_view_photo_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="Photo result" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/img_view_photo_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="Photo result"
+            android:scaleType="centerInside" />
     </LinearLayout>
 
     <Button
         android:id="@+id/button_submit_tally"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
         android:text="Submit"
         app:icon="@drawable/ic_baseline_check_24" />
 </RelativeLayout>

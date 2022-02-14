@@ -39,6 +39,7 @@ class AddEditClassFragment : Fragment(R.layout.fragment_add_edit_class) {
         if (args.classToEdit != null) { // Edit class
             val classToEdit = args.classToEdit!!
             binding.etTitle.setText(classToEdit.title)
+            binding.etDescription.setText(classToEdit.description)
             binding.etShortId.setText(classToEdit.shortId)
             binding.etTimeLimit.setText(classToEdit.entryTimeLimit.toString())
             binding.checkboxArchived.isChecked = classToEdit.archived
@@ -70,6 +71,7 @@ class AddEditClassFragment : Fragment(R.layout.fragment_add_edit_class) {
         val title = binding.etTitle.text.toString().trim()
         val shortId = binding.etShortId.text.toString().trim()
         val timeLimit = binding.etTimeLimit.text.toString().trim()
+        val description = binding.etDescription.text.toString().trim()
         val isArchived = binding.checkboxArchived.isChecked
 
         if (title.isEmpty() || shortId.isEmpty() || timeLimit.isEmpty()) {
@@ -87,6 +89,7 @@ class AddEditClassFragment : Fragment(R.layout.fragment_add_edit_class) {
         currentClass = MyClass(
             shortId = shortId,
             title = title,
+            description = description,
             entryTimeLimit = timeLimit.toInt(),
             archived = isArchived,
             authorId = author.uid
@@ -112,6 +115,7 @@ class AddEditClassFragment : Fragment(R.layout.fragment_add_edit_class) {
                             classRef.document(document.id).update(
                                 "archived", currentClass.archived,
                                 "title", currentClass.title,
+                                "description", currentClass.description,
                                 "entryTimeLimit", currentClass.entryTimeLimit,
                                 "shortId", currentClass.shortId
                             )

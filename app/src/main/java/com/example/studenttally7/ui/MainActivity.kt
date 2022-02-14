@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.classesFragment,
-                R.id.tallyingFragment,
                 R.id.loginFragment
             )
         )
@@ -45,10 +44,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNav.setupWithNavController(navController)
 
-        val role = getSharedPreferences("TallyAppPrefs", MODE_PRIVATE).getString("role", "none")
-        if (role == "teacher") {
+//        val role = getSharedPreferences("TallyAppPrefs", MODE_PRIVATE).getString("role", "none")
+//        if (role == "teacher") {
             binding.bottomNav.visibility = View.GONE
-        }
+//        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

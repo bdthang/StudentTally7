@@ -25,6 +25,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/tv_description"
             android:layout_below="@id/tv_title"
             android:layout_toStartOf="@id/button_edit_class"
             android:text="Description" />
@@ -39,12 +40,22 @@
             android:src="@drawable/ic_baseline_edit_24" />
 
         <ImageView
+            android:id="@+id/button_checkin_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/button_remove_class"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Check in class"
+            android:src="@drawable/ic_baseline_check_24" />
+
+        <ImageView
             android:id="@+id/button_remove_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:contentDescription="Edit class"
+            android:contentDescription="Remove class"
             android:src="@drawable/ic_baseline_delete_24" />
 
     </RelativeLayout>
