@@ -3,7 +3,9 @@ package com.example.studenttally7.ui
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -13,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -25,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import java.lang.NullPointerException
 
@@ -135,8 +139,8 @@ class TallyingFragment : Fragment(R.layout.fragment_tallying) {
                                                     .collection(FirestoreCollectionName.ENTRY_COLLECTION)
                                                 entryRef.document(studentId.toString())
                                                     .set(newEntry)
-                                                Toast.makeText(context, "Done", Toast.LENGTH_SHORT)
-                                                    .show()
+                                                Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show()
+                                                findNavController().navigateUp()
                                             } else {
                                                 Toast.makeText(
                                                     context,
@@ -227,7 +231,15 @@ class TallyingFragment : Fragment(R.layout.fragment_tallying) {
         if (requestCode == CAMERA_REQUEST_CODE) {
             try {
                 photo = data!!.extras!!.get("data") as Bitmap
-                binding.imgViewPhotoResult.setImageBitmap(photo)
+                val matrix = Matrix()
+                matrix.setScale(-1F, 1F)
+                matrix.postTranslate(photo.width.toFloat(), 0F)
+                photo = Bitmap.createBitmap(photo, 0, 0, photo.width, photo.height, matrix, true)
+//                binding.imgViewPhotoResult.setImageBitmap(photo)
+
+                val width = Resources.getSystem().displayMetrics.widthPixels
+                val scaledPhoto = photo.scale(width, width / photo.width * photo.height)
+                binding.imgViewPhotoResult.setImageBitmap(scaledPhoto)
 //                saveImageToStorage()
             } catch (e: NullPointerException) {
                 Log.e("Camera", "Photo not retrieved. $e")

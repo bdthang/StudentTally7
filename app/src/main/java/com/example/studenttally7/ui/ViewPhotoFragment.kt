@@ -1,6 +1,10 @@
 package com.example.studenttally7.ui
 
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +15,7 @@ import com.example.studenttally7.databinding.FragmentViewPhotoBinding
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 class ViewPhotoFragment : Fragment(R.layout.fragment_view_photo) {
     private var _binding: FragmentViewPhotoBinding? = null
@@ -39,7 +44,11 @@ class ViewPhotoFragment : Fragment(R.layout.fragment_view_photo) {
 
         val photo: StorageReference = FirebaseStorage.getInstance().reference.child(photoUrl)
         photo.downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it.toString()).into(binding.imgViewPhoto)
+            val width = Resources.getSystem().displayMetrics.widthPixels
+            Picasso.get().load(it.toString())
+                .resize(width, 0)
+                .into(binding.imgViewPhoto)
+
         }
     }
 
